@@ -1,0 +1,19 @@
+1、下載VTS或者CTS組件，然後解壓後安裝;
+2、下載android adb工具並且添加到系統環境中; 記得最後需要source /etc/profile
+3、sudo apt-get install aapt
+4、sudo apt-get install virtualenv
+5、sudo apt-get install python
+
+
+
+faf80ac1	no permissions (user in plugdev group; are your udev rules wrong?); see [http://developer.android.com/tools/device.html]錯誤解決
+(1)lsusb 找到你手机的usb地址
+(2)sudo gedit /etc/udev/rules.d/51-android.rules,然後添加ATTR{idProduct}=="<your device user address>", SYMLINK+="android_adb", MODE="0660", GROUP="plugdev", TAG+="uaccess", SYMLINK+="android"
+(3)sudo usermod -a -G plugdev $(id -u -n)
+(4)sudo udevadm control --reload-rules
+(5)sudo service udev restart
+(6)sudo udevadm trigger
+重啓adb
+(7)./adb kill-server 
+(8)./adb start-server
+(9)./adb devices
